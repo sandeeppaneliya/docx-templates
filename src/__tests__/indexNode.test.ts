@@ -957,6 +957,26 @@ Morbi dignissim consequat ex, non finibus est faucibus sodales. Integer sed just
           )
         ).rejects.toMatchSnapshot();
       });
+
+      it('107 non-English command encoding', async () => {
+        const template = await fs.promises.readFile(
+          path.join(__dirname, 'fixtures', 'commandEncoding.docx')
+        );
+        expect(
+          await createReport(
+            {
+              noSandbox,
+              template,
+              data: {
+                姓名: 'hong',
+                标题: 'junyao',
+              },
+              cmdDelimiter: ['{', '}'],
+            },
+            'JS'
+          )
+        ).toMatchSnapshot();
+      });
     });
   });
 });
