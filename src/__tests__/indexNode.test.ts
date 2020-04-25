@@ -998,6 +998,27 @@ Morbi dignissim consequat ex, non finibus est faucibus sodales. Integer sed just
           )
         ).toMatchSnapshot();
       });
+
+      it('102 custom delimiters that may be confused with JS syntax', async () => {
+        // Issue #102
+        expect(
+          await createReport(
+            {
+              noSandbox,
+              template: await fs.promises.readFile(
+                path.join(
+                  __dirname,
+                  'fixtures',
+                  'customDelimitersJSsyntax.docx'
+                )
+              ),
+              data: {},
+              cmdDelimiter: ['{', '}'],
+            },
+            'JS'
+          )
+        ).toMatchSnapshot();
+      });
     });
   });
 });
