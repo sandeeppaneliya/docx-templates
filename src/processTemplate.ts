@@ -564,7 +564,8 @@ const getCommand = (ctx: Context): string => {
     cmd = `INS ${cmd.slice(1).trim()}`;
   } else if (cmd[0] === '!') {
     cmd = `EXEC ${cmd.slice(1).trim()}`;
-  } else if (notBuiltIns(cmd) && /^[a-zA-Z$`'"]/.test(cmd)) {
+  } else if (notBuiltIns(cmd) && /^\S/.test(cmd)) {
+    // The command does NOT match a built-in and does NOT start with whitespace
     cmd = `INS ${cmd.trim()}`;
   }
   ctx.cmd = '';
