@@ -958,45 +958,40 @@ Morbi dignissim consequat ex, non finibus est faucibus sodales. Integer sed just
         ).rejects.toMatchSnapshot();
       });
 
-      it('107a non-English command encoding', async () => {
-        // Issue #107
+      it('107a non-alphanumeric INS commands (e.g. Chinese)', async () => {
+        // Issue #107.
         const data = {
           姓名: 'hong',
           标题: 'junyao',
         };
-
-        // Should work according to report in issue #107
         expect(
           await createReport(
             {
               noSandbox,
               template: await fs.promises.readFile(
-                path.join(__dirname, 'fixtures', 'commandEncoding1.docx')
+                path.join(__dirname, 'fixtures', 'nonAlphaCommandNames1.docx')
               ),
               data,
-              cmdDelimiter: ['+++', '+++'],
             },
             'JS'
           )
         ).toMatchSnapshot();
       });
 
-      it('107b non-English command encoding', async () => {
+      it('107b non-alphanumeric INS commands (e.g. Chinese) with custom delimiter', async () => {
+        // Issue #107.
         const data = {
           姓名: 'hong',
           标题: 'junyao',
         };
-
-        // Does not work according to report in issue #107
         expect(
           await createReport(
             {
               noSandbox,
               template: await fs.promises.readFile(
-                path.join(__dirname, 'fixtures', 'commandEncoding2.docx')
+                path.join(__dirname, 'fixtures', 'nonAlphaCommandNames2.docx')
               ),
               data,
-              // Using a custom delimiter triggers the problem
               cmdDelimiter: ['{', '}'],
             },
             'JS'
