@@ -958,19 +958,45 @@ Morbi dignissim consequat ex, non finibus est faucibus sodales. Integer sed just
         ).rejects.toMatchSnapshot();
       });
 
-      it('107 non-English command encoding', async () => {
-        const template = await fs.promises.readFile(
-          path.join(__dirname, 'fixtures', 'commandEncoding.docx')
-        );
+      it('107a non-English command encoding', async () => {
+        // Issue #107
+        const data = {
+          姓名: 'hong',
+          标题: 'junyao',
+        };
+
+        // Should work according to report in issue #107
         expect(
           await createReport(
             {
               noSandbox,
-              template,
-              data: {
-                姓名: 'hong',
-                标题: 'junyao',
-              },
+              template: await fs.promises.readFile(
+                path.join(__dirname, 'fixtures', 'commandEncoding1.docx')
+              ),
+              data,
+              cmdDelimiter: ['+++', '+++'],
+            },
+            'JS'
+          )
+        ).toMatchSnapshot();
+      });
+
+      it('107b non-English command encoding', async () => {
+        const data = {
+          姓名: 'hong',
+          标题: 'junyao',
+        };
+
+        // Does not work according to report in issue #107
+        expect(
+          await createReport(
+            {
+              noSandbox,
+              template: await fs.promises.readFile(
+                path.join(__dirname, 'fixtures', 'commandEncoding2.docx')
+              ),
+              data,
+              // Using a custom delimiter triggers the problem
               cmdDelimiter: ['{', '}'],
             },
             'JS'
